@@ -59,10 +59,7 @@ stdenv.mkDerivation (finalAttrs: {
 
   postBuild = ''
     patchShebangs "releases/gaiasky-${finalAttrs.version}.${finalAttrs.version}"/gaiasky
-    # Exclude copyExecutable so that it doesn't overwrite the patched files.
-    env
-    echo $gradleFlags
-    # gradleFlags="" gradle :core:generateManPage -x :core:copyExecutables
+    printenv
   '';
 
   installPhase = ''
@@ -100,6 +97,10 @@ stdenv.mkDerivation (finalAttrs: {
       "x86_64-linux"
       "x86_64-darwin"
       "aarch64-darwin"
+    ];
+    sourceProvenance = with lib.sourceTypes; [
+      fromSource
+      binaryBytecode
     ];
     mainProgram = "gaiasky";
   };
