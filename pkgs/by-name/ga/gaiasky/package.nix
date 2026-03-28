@@ -60,6 +60,7 @@ stdenv.mkDerivation (finalAttrs: {
   postBuild = ''
     patchShebangs "releases/gaiasky-${finalAttrs.version}.${finalAttrs.version}"/gaiasky
     # Exclude copyExecutable so that it doesn't overwrite the patched files.
+    env
     echo $gradleFlags
     # gradleFlags="" gradle :core:generateManPage -x :core:copyExecutables
   '';
