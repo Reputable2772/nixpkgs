@@ -8,6 +8,7 @@
   libGL,
   nix-update-script,
   help2man,
+  breakpointHook
 }:
 
 stdenv.mkDerivation (finalAttrs: {
@@ -29,6 +30,7 @@ stdenv.mkDerivation (finalAttrs: {
   buildInputs = [
     jdk25
     libGL
+    # breakpointHook
   ];
 
   __darwinAllowLocalNetworking = true;
@@ -58,7 +60,8 @@ stdenv.mkDerivation (finalAttrs: {
   postBuild = ''
     patchShebangs "releases/gaiasky-${finalAttrs.version}.${finalAttrs.version}"/gaiasky
     # Exclude copyExecutable so that it doesn't overwrite the patched files.
-    gradleFlags="" gradle :core:generateManPage -x :core:copyExecutables
+    echo $gradleFlags
+    # gradleFlags="" gradle :core:generateManPage -x :core:copyExecutables
   '';
 
   installPhase = ''
