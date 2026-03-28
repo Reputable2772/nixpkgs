@@ -31,6 +31,8 @@ stdenv.mkDerivation (finalAttrs: {
     libGL
   ];
 
+  __darwinAllowLocalNetworking = true;
+
   gradleBuildTask = "core:dist";
 
   # Gaiasky binary has to be executed to generate manpage.
