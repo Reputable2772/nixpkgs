@@ -41,8 +41,12 @@ stdenv.mkDerivation (finalAttrs: {
   # However, since since /usr/bin/env bash is hardcoded in the binary
   # it errors out. It is generated in postBuild phase instead.
   gradleFlags = [
-    "--stacktrace"
-    "--debug"
+    # "--stacktrace"
+    # "--debug"
+    "--no-daemon"
+    "-Dorg.gradle.jvmargs="
+    "-Dorg.gradle.daemon=false"
+    "-Djava.net.preferIPv4Stack=true"
     "-x :core:generateManPage"
     "-x :core:gzipManPage"
   ];
@@ -57,6 +61,10 @@ stdenv.mkDerivation (finalAttrs: {
     substituteInPlace build.gradle \
       --replace-fail "def cmd = \"git describe --abbrev=0 --tags HEAD\"" "def cmd = \"echo ${finalAttrs.version}\"" \
       --replace-fail "cmd = \"git rev-parse --short HEAD\"" "cmd = \"echo ${finalAttrs.version}\""
+
+    substituteInPlace gradle.properties \
+      --replace-fail "org.gradle.daemon=true" "org.gradle.daemon=false" \
+      --replace-fail "org.gradle.jvmargs=-Xms512m -Xmx2048m" "org.gradle.jvmargs="
   '';
 
   postBuild = ''
