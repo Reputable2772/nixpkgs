@@ -33,7 +33,7 @@ stdenv.mkDerivation (finalAttrs: {
     # breakpointHook
   ];
 
-  __darwinAllowLocalNetworking = true;
+  __darwinAllowLocalNetworking = false;
 
   gradleBuildTask = "core:dist";
 
@@ -58,18 +58,20 @@ stdenv.mkDerivation (finalAttrs: {
   '';
 
   postBuild = ''
-    patchShebangs "releases/gaiasky-${finalAttrs.version}.${finalAttrs.version}"/gaiasky
     printenv
+    patchShebangs "releases/gaiasky-${finalAttrs.version}.${finalAttrs.version}"/gaiasky
+
+    gradleFlags="" gradle :core:generateManPage -x :core:copyExecutables
   '';
 
   installPhase = ''
     runHook preInstall
 
-    install -m755 -d $out/bin $out/share/applications $out/share/metainfo $out/share/gaiasky $out/share/icons/hicolor/scalable/apps $out/share/icons/hicolor/256x256/apps $out/share/man/man6
+    install -m755 -d $out/bin $out/share/applications $out/share/metainfo $out/share/gaiasky $out/share/man/man6
 
     cp -r "releases/gaiasky-${finalAttrs.version}.${finalAttrs.version}"/* $out/share/gaiasky/
-    install -m644 $out/share/gaiasky/gs_icon.svg $out/share/icons/hicolor/scalable/apps/gaiasky.svg
-    install -m644 $out/share/gaiasky/gs_round_256.png $out/share/icons/hicolor/256x256/apps/gaiasky.png
+    install -Dm644 $out/share/gaiasky/gs_icon.svg $out/share/icons/hicolor/scalable/apps/gaiasky.svg
+    install -Dm644 $out/share/gaiasky/gs_round_256.png $out/share/icons/hicolor/256x256/apps/gaiasky.png
     install -m644 $out/share/gaiasky/space.gaiasky.GaiaSky.metainfo.xml $out/share/metainfo/
     install -m644 $out/share/gaiasky/gaiasky.desktop $out/share/applications/
     install -m644 $out/share/gaiasky/gaiasky.6 $out/share/man/man6/
