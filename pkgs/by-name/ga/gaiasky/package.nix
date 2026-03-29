@@ -43,10 +43,6 @@ stdenv.mkDerivation (finalAttrs: {
   gradleFlags = [
     "--stacktrace"
     "--debug"
-    "--no-daemon"
-    "-Dorg.gradle.jvmargs="
-    "-Dorg.gradle.daemon=false"
-    "-Djava.net.preferIPv4Stack=true"
     "-x :core:generateManPage"
     "-x :core:gzipManPage"
   ];
@@ -62,18 +58,12 @@ stdenv.mkDerivation (finalAttrs: {
       --replace-fail "def cmd = \"git describe --abbrev=0 --tags HEAD\"" "def cmd = \"echo ${finalAttrs.version}\"" \
       --replace-fail "cmd = \"git rev-parse --short HEAD\"" "cmd = \"echo ${finalAttrs.version}\""
 
-    substituteInPlace gradle.properties \
-      --replace-fail "org.gradle.daemon=true" "org.gradle.daemon=false" \
-      --replace-fail "org.gradle.jvmargs=-Xms512m -Xmx2048m" "org.gradle.jvmargs=" \
-      --replace-fail "org.gradle.configureondemand=true" "org.gradle.configureondemand=false"
-
     printenv
   '';
 
   postBuild = ''
     patchShebangs "releases/gaiasky-${finalAttrs.version}.${finalAttrs.version}"/gaiasky
-
-    gradleFlags="" gradle :core:generateManPage -x :core:copyExecutables
+    # gradleFlags="" gradle :core:generateManPage -x :core:copyExecutables
   '';
 
   installPhase = ''
