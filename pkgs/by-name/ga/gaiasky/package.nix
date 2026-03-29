@@ -41,8 +41,8 @@ stdenv.mkDerivation (finalAttrs: {
   # However, since since /usr/bin/env bash is hardcoded in the binary
   # it errors out. It is generated in postBuild phase instead.
   gradleFlags = [
-    # "--stacktrace"
-    # "--debug"
+    "--stacktrace"
+    "--debug"
     "--no-daemon"
     "-Dorg.gradle.jvmargs="
     "-Dorg.gradle.daemon=false"
@@ -64,11 +64,13 @@ stdenv.mkDerivation (finalAttrs: {
 
     substituteInPlace gradle.properties \
       --replace-fail "org.gradle.daemon=true" "org.gradle.daemon=false" \
-      --replace-fail "org.gradle.jvmargs=-Xms512m -Xmx2048m" "org.gradle.jvmargs="
+      --replace-fail "org.gradle.jvmargs=-Xms512m -Xmx2048m" "org.gradle.jvmargs=" \
+      --replace-fail "org.gradle.configureondemand=true" "org.gradle.configureondemand=false"
+
+    printenv
   '';
 
   postBuild = ''
-    printenv
     patchShebangs "releases/gaiasky-${finalAttrs.version}.${finalAttrs.version}"/gaiasky
 
     gradleFlags="" gradle :core:generateManPage -x :core:copyExecutables
