@@ -33,7 +33,7 @@ stdenv.mkDerivation (finalAttrs: {
     # breakpointHook
   ];
 
-  __darwinAllowLocalNetworking = false;
+  __darwinAllowLocalNetworking = true;
 
   gradleBuildTask = "core:dist";
 
