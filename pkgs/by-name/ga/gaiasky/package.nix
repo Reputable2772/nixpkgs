@@ -41,6 +41,8 @@ stdenv.mkDerivation (finalAttrs: {
   # However, since since /usr/bin/env bash is hardcoded in the binary
   # it errors out. It is generated in postBuild phase instead.
   gradleFlags = [
+    "--stacktrace"
+    "--debug"
     "-x :core:generateManPage"
     "-x :core:gzipManPage"
   ];
