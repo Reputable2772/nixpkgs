@@ -2,7 +2,7 @@
   lib,
   stdenv,
   fetchFromCodeberg,
-  gradle,
+  gradle_9,
   makeBinaryWrapper,
   jdk25,
   libGL,
@@ -22,7 +22,7 @@ stdenv.mkDerivation (finalAttrs: {
   };
 
   nativeBuildInputs = [
-    gradle
+    gradle_9
     makeBinaryWrapper
     help2man
   ];
@@ -45,7 +45,7 @@ stdenv.mkDerivation (finalAttrs: {
     "-x :core:gzipManPage"
   ];
 
-  mitmCache = gradle.fetchDeps {
+  mitmCache = gradle_9.fetchDeps {
     inherit (finalAttrs) pname;
     data = ./deps.json;
   };
