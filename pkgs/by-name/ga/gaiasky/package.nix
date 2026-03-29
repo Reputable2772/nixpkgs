@@ -8,7 +8,7 @@
   libGL,
   nix-update-script,
   help2man,
-  breakpointHook
+  # breakpointHook
 }:
 
 stdenv.mkDerivation (finalAttrs: {
@@ -30,7 +30,7 @@ stdenv.mkDerivation (finalAttrs: {
   buildInputs = [
     jdk25
     libGL
-    breakpointHook
+    # breakpointHook
   ];
 
   __darwinAllowLocalNetworking = true;
