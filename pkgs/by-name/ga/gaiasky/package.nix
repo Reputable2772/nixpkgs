@@ -30,7 +30,7 @@ stdenv.mkDerivation (finalAttrs: {
   buildInputs = [
     jdk25
     libGL
-    # breakpointHook
+    breakpointHook
   ];
 
   __darwinAllowLocalNetworking = true;
@@ -68,6 +68,7 @@ stdenv.mkDerivation (finalAttrs: {
 
   installPhase = ''
     runHook preInstall
+    # exit 1
 
     install -m755 -d $out/bin $out/share/applications $out/share/metainfo $out/share/gaiasky $out/share/man/man6
 
@@ -76,7 +77,7 @@ stdenv.mkDerivation (finalAttrs: {
     install -Dm644 $out/share/gaiasky/gs_round_256.png $out/share/icons/hicolor/256x256/apps/gaiasky.png
     install -m644 $out/share/gaiasky/space.gaiasky.GaiaSky.metainfo.xml $out/share/metainfo/
     install -m644 $out/share/gaiasky/gaiasky.desktop $out/share/applications/
-    install -m644 $out/share/gaiasky/gaiasky.6 $out/share/man/man6/
+    # install -m644 $out/share/gaiasky/gaiasky.6 $out/share/man/man6/
 
     substituteInPlace $out/share/applications/gaiasky.desktop \
       --replace-fail "Icon=/opt/gaiasky/gs_icon.svg" "Icon=gaiasky"
